@@ -1,5 +1,6 @@
 package com.hashedin.restaurant_service.service;
 
+import com.hashedin.restaurant_service.exceptionHandler.NotFoundException;
 import com.hashedin.restaurant_service.model.Item;
 import com.hashedin.restaurant_service.model.Menu;
 import com.hashedin.restaurant_service.repository.ItemRepository;
@@ -24,7 +25,7 @@ public class ItemService {
 
     public Optional<Item> getItemById(int id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+                .orElseThrow(() -> new NotFoundException( "Item with " + id + " not found"));
         return itemRepository.findById(id);
     }
 
@@ -33,7 +34,7 @@ public class ItemService {
     }
     public Item updateItem(int id, Item itemDetails) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+                .orElseThrow(() -> new NotFoundException( "Item with " + id + " not found"));
 
         if(itemDetails.getItem_name() != null){
             item.setItem_name(itemDetails.getItem_name());
@@ -48,7 +49,7 @@ public class ItemService {
 
     public void deleteItem(int id) {
         Item item = itemRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+                .orElseThrow(() -> new NotFoundException( "Item with " + id + " not found"));
         itemRepository.delete(item);
     }
 }

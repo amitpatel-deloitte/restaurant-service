@@ -3,6 +3,7 @@ package com.hashedin.restaurant_service.controller;
 import com.hashedin.restaurant_service.model.Menu;
 import com.hashedin.restaurant_service.model.MenuDTO;
 import com.hashedin.restaurant_service.service.MenuService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RequestMapping("/menu")
 @RestController
+@Tag(name = " Menu Controller ")
 public class MenuController {
 
     @Autowired

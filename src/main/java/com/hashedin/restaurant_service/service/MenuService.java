@@ -1,5 +1,6 @@
 package com.hashedin.restaurant_service.service;
 
+import com.hashedin.restaurant_service.exceptionHandler.NotFoundException;
 import com.hashedin.restaurant_service.model.Item;
 import com.hashedin.restaurant_service.model.Menu;
 import com.hashedin.restaurant_service.model.MenuDTO;
@@ -29,7 +30,7 @@ public class MenuService {
 
     public Optional<Menu> getMenuById(int id) {
         Menu menu = menuRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu not found"));
+                .orElseThrow(() -> new NotFoundException( " Menu with " + id + " not found"));
         return menuRepository.findById(id);
     }
 
@@ -47,7 +48,7 @@ public class MenuService {
 
     public Menu updateMenu(int id, MenuDTO menuDTO) {
         Menu existingMenu = menuRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu not found"));
+                .orElseThrow(() -> new NotFoundException( " Menu with " + id + " not found"));
 
         if(menuDTO.getName() != null){
             existingMenu.setName(menuDTO.getName());
@@ -62,11 +63,7 @@ public class MenuService {
 
     public void deleteMenu(int id) {
         Menu menu = menuRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Menu not found"));
+                .orElseThrow(() -> new NotFoundException( " Menu with " + id + " not found"));
         menuRepository.delete(menu);
-    }
-
-    public List<Menu> getMenusByRestaurant(int restaurantId){
-        return menuRepository.findAll(); // Need to Update this query
     }
 }

@@ -1,5 +1,6 @@
 package com.hashedin.restaurant_service.service;
 
+import com.hashedin.restaurant_service.exceptionHandler.NotFoundException;
 import com.hashedin.restaurant_service.model.Menu;
 import com.hashedin.restaurant_service.model.Restaurant;
 import com.hashedin.restaurant_service.model.RestaurantInput;
@@ -7,9 +8,7 @@ import com.hashedin.restaurant_service.model.RestaurantDTO;
 import com.hashedin.restaurant_service.repository.MenuRepository;
 import com.hashedin.restaurant_service.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -38,12 +37,12 @@ public class RestaurantService {
 
     public Restaurant getRestaurantById(int id) {
         return restaurantRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant not found"));
+                .orElseThrow(() -> new NotFoundException( " Restaurant with " + id + " not found"));
     }
 
     public Restaurant addMenusToRestaurant(int restaurantId, List<Integer> menuIds){
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant not found"));
+                .orElseThrow(() -> new NotFoundException( "Restaurant with " + restaurantId + " not found"));
 
         List<Menu> menus = menuRepository.findAllById(menuIds);
         restaurant.setMenus(menus);
@@ -52,7 +51,7 @@ public class RestaurantService {
 
     public Restaurant updateRestaurant(int id, RestaurantDTO restaurantDetails) {
         Restaurant existingRestaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant not found"));
+                .orElseThrow(() -> new NotFoundException( " Restaurant with " + id + " not found"));
 
         if(restaurantDetails.getName() != null){
             existingRestaurant.setRestaurant_name(restaurantDetails.getName());
@@ -75,7 +74,7 @@ public class RestaurantService {
 
     public void deleteRestaurant(int id) {
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant not found"));
+                .orElseThrow(() -> new NotFoundException( "Restaurant with " + id + " not found"));
         restaurantRepository.delete(restaurant);
     }
 }
