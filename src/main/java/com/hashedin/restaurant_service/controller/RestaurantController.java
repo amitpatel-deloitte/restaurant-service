@@ -54,7 +54,7 @@ public class RestaurantController {
     @Operation(summary = " To delete restaurant by Id ")
     public String deleteRestaurant(@PathVariable("id") int id) {
         restaurantService.deleteRestaurant(id);
-        return "Restaurant with id : "+ id + "deleted successfully";
+        return "Restaurant with id : "+ id + " deleted successfully";
     }
 
     @PostMapping("/add-menus-to-restaurant")

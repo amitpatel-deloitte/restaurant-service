@@ -49,7 +49,7 @@ public class MenuController {
     @Operation(summary = " Delete menu by Id")
     public String deleteMenu(@PathVariable("id") int id) {
         menuService.deleteMenu(id);
-        return "Menu with id : " + id + "deleted successfully";
+        return "Menu with id : " + id + " deleted successfully";
     }
 
 }
