@@ -7,6 +7,8 @@ import com.hashedin.restaurant_service.model.MenuDTO;
 import com.hashedin.restaurant_service.model.Restaurant;
 import com.hashedin.restaurant_service.repository.ItemRepository;
 import com.hashedin.restaurant_service.repository.MenuRepository;
+import com.hashedin.restaurant_service.repository.RestaurantRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class MenuService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
 
     public List<Menu> getAllMenus() {
         return menuRepository.findAll();
@@ -61,9 +66,17 @@ public class MenuService {
         return menuRepository.save(existingMenu);
     }
 
+    @Transactional
     public void deleteMenu(int id) {
         Menu menu = menuRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException( " Menu with " + id + " not found"));
+        menu.getItems().clear();
+
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        for(Restaurant restaurant : restaurants){
+                restaurant.getMenus().remove(menu);
+                restaurantRepository.save(restaurant);
+            }
         menuRepository.delete(menu);
     }
 }

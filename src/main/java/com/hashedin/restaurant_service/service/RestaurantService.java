@@ -57,13 +57,13 @@ public class RestaurantService {
             existingRestaurant.setRestaurant_name(restaurantDetails.getName());
         }
         if(restaurantDetails.getLocation() != null){
-            existingRestaurant.setRestaurant_name(restaurantDetails.getLocation());
+            existingRestaurant.setLocation(restaurantDetails.getLocation());
         }
         if(restaurantDetails.getCuisine_type() != null){
-            existingRestaurant.setRestaurant_name(restaurantDetails.getCuisine_type());
+            existingRestaurant.setCuisine_type(restaurantDetails.getCuisine_type());
         }
         if(restaurantDetails.getContact_info() != null){
-            existingRestaurant.setRestaurant_name(restaurantDetails.getContact_info());
+            existingRestaurant.setContact_info(restaurantDetails.getContact_info());
         }
         if(restaurantDetails.getMenuIds() != null && !restaurantDetails.getMenuIds().isEmpty()){
             List<Menu> menus = menuRepository.findAllById(restaurantDetails.getMenuIds());
@@ -75,6 +75,7 @@ public class RestaurantService {
     public void deleteRestaurant(int id) {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException( "Restaurant with " + id + " not found"));
+        restaurant.getMenus().clear();
         restaurantRepository.delete(restaurant);
     }
 }
